@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/redux@4.0.1/dist/redux.js"></script>
+    <title>Study Redux</title>
+</head>
+<body>
+    <style>
+        body{
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box{
+            width: 300px;
+            height: 100px;
+            border: 3px solid #000;
+            background-color: gray;
+        }
+    </style>
+    <div id="increaseBox"></div>
+    <div id="decreaseBox"></div>
+    <script>
+        function reducer(state, action){
+            if(state === undefined){
+                return {value: 0};
+            }
+
+            switch(action.type){
+                case "INCREASE" : return {value: action.number};
+                case "DECREASE" : return {value: action.number};
+            }
+        }
+
+        const store = Redux.createStore(reducer);
+        
+        function increaseBox(){
+            const state = store.getState();
+
+            document.querySelector("#increaseBox").innerHTML = `
+                <div class="box">
+                    <h1>${state.value}</h1>
+                    <input type="button" value="increase" onclick="store.dispatch({type: 'INCREASE', number: ${state.value + 1}});"/>
+                </div>
+            `;
+        }
+        
+        store.subscribe(increaseBox);
+        increaseBox();
+
+        function decreaseBox(){
+            const state = store.getState();
+
+            document.querySelector("#decreaseBox").innerHTML = `
+                <div class="box">
+                    <h1>${state.value}</h1>
+                    <input type="button" value="decrease" onclick="store.dispatch({type: 'DECREASE', number: ${state.value + 1}});"/>
+                </div>
+            `;
+        }
+        
+        store.subscribe(decreaseBox);
+        decreaseBox();
+    </script>
+</body>
+</html>
